@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family 3 Round‑Trip – Campervan Times + Fuel Stops</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 1.5cm;
+        font-size: 10pt;
+        background: #f5f7fa;
+      }
+      h1 {
+        font-size: 22pt;
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 5px;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 12pt;
+        color: #555;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+      .summary {
+        background: #ecf0f1;
+        padding: 12px 18px;
+        border-left: 5px solid #3498db;
+        margin: 15px 0;
+        border-radius: 4px;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 8px;
+      }
+      .summary-item {
+        font-size: 10pt;
+      }
+      .summary-item strong {
+        color: #2c3e50;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 15px 0;
+        font-size: 9.5pt;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th {
+        background: #2c3e50;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 9.5pt;
+        cursor: default;
+      }
+      td {
+        border-bottom: 1px solid #e0e4e8;
+        padding: 10px 8px;
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Main row – clickable */
+      .main-row {
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .main-row:hover {
+        background: #eaf4fb;
+      }
+      .main-row td:first-child {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      /* Detail row – hidden by default */
+      .detail-row {
+        display: none;
+        background: #f8fafc;
+      }
+      .detail-row td {
+        padding: 12px 16px;
+        font-size: 9.5pt;
+        border-top: none;
+      }
+      .detail-row.open {
+        display: table-row;
+      }
+
+      .detail-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 30px;
+        padding: 4px 0;
+      }
+      .detail-activity {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        min-width: 200px;
+        flex: 1 1 30%;
+      }
+      .detail-activity .icon {
+        font-size: 14pt;
+        line-height: 1.2;
+      }
+      .detail-activity .label {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .detail-activity .desc {
+        color: #444;
+      }
+
+      .fuel-stop {
+        background: #fff8e7;
+        border-left: 4px solid #f1c40f;
+        padding: 6px 12px;
+        margin-top: 6px;
+        border-radius: 4px;
+        width: 100%;
+        font-size: 9.5pt;
+      }
+      .fuel-stop .icon {
+        font-size: 12pt;
+      }
+      .fuel-stop strong {
+        color: #2c3e50;
+      }
+
+      .expand-icon {
+        display: inline-block;
+        font-size: 10pt;
+        color: #3498db;
+        margin-right: 6px;
+        transition: transform 0.2s;
+        font-weight: bold;
+      }
+      .main-row .expand-icon {
+        font-size: 11pt;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        body {
+          margin: 0.8cm;
+          font-size: 9pt;
+        }
+        th,
+        td {
+          padding: 6px 4px;
+          font-size: 8pt;
+        }
+        .detail-activity {
+          flex: 1 1 100%;
+        }
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media print {
+        .main-row:hover {
+          background: inherit;
+        }
+        .detail-row {
+          display: table-row !important;
+        }
+        .expand-icon {
+          display: none;
+        }
+        .detail-row td {
+          background: #f8fafc !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚐 Family 3 Round‑Trip – Stuttgart to Stuttgart</h1>
+    <p class="subtitle">
+      11 Nights · 12 Days · July 2026 ·
+      <strong>Click a row to expand activities + fuel stops</strong>
+    </p>
+
+    <div class="summary">
+      <div class="summary-grid">
+        <div class="summary-item"><strong>Total Nights:</strong> 11</div>
+        <div class="summary-item">
+          <strong>Total Driving:</strong> ~1,800 km
+        </div>
+        <div class="summary-item">
+          <strong>Total Drive Time:</strong> ~28 hours (campervan)
+        </div>
+        <div class="summary-item">
+          <strong>Countries:</strong> DE → CH → IT → AT → DE
+        </div>
+        <div class="summary-item">
+          <strong>Full Rest Days:</strong> 3 (Interlaken, Venice, Salzburg)
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 8%">Date</th>
+          <th style="width: 7%">Day</th>
+          <th style="width: 20%">Route</th>
+          <th style="width: 10%">Distance (km)</th>
+          <th style="width: 14%">Campervan Travel Time</th>
+          <th style="width: 16%">Overnight</th>
+          <th style="width: 25%">
+            Activities &amp; Fuel
+            <span style="font-weight: normal">(click to expand)</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Day 1 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 6</td>
+          <td>Mon</td>
+          <td>Stuttgart/Munich → Engen</td>
+          <td>140</td>
+          <td><strong>2h 00m</strong></td>
+          <td>Engen</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">3 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🚐</span><span class="label">RV Pickup</span
+                ><span class="desc"
+                  >Collect campervan, inspect, load luggage</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🛒</span
+                ><span class="label">Grocery Stock‑up</span
+                ><span class="desc"
+                  >Shop for initial food supplies (Lidl/Aldi nearby)</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌳</span
+                ><span class="label">Engen Explore</span
+                ><span class="desc"
+                  >Relaxed evening walk in the quiet town</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> Fill up
+                near Stuttgart before departure –
+                <strong>Raststätte Wunnenstein Ost</strong> (A81, km 548) or
+                <strong>OMV Solitudestr. 207</strong> (near
+                A81)[reference:0][reference:1]. Also possible at
+                <strong>TAMOIL Engen</strong> (A81, km 711) upon
+                arrival[reference:2].
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 2 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 7</td>
+          <td>Tue</td>
+          <td>Engen → Rhine Falls → Lucerne</td>
+          <td>129</td>
+          <td><strong>1h 45m</strong></td>
+          <td>Between Lucerne &amp; Titlis</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">4 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🌊</span
+                ><span class="label">Rhine Falls</span
+                ><span class="desc"
+                  >Europe's largest waterfall – boat ride to the rock in the
+                  middle</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌉</span
+                ><span class="label">Chapel Bridge</span
+                ><span class="desc"
+                  >Lucerne's famous wooden bridge with tower</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🦁</span
+                ><span class="label">Lion Monument</span
+                ><span class="desc"
+                  >Historic carved lion memorial – easy walk</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛵</span
+                ><span class="label">Lake Lucerne Boat</span
+                ><span class="desc"
+                  >Scenic boat tour on the lake (optional)</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> Fill up
+                in
+                <strong>Germany before crossing into Switzerland</strong> (fuel
+                is cheaper). Recommended:
+                <strong>Tankstelle Vogel-Garagen</strong> (Salzburger Str.
+                46-56, near A81/A8)[reference:3] or any station near the border
+                at <strong>Basel / Rheinfelden</strong>.
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 3 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 8</td>
+          <td>Wed</td>
+          <td>Lucerne → Titlis (full day) → Interlaken</td>
+          <td>121</td>
+          <td><strong>1h 45m</strong></td>
+          <td>Interlaken</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">4 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🚠</span
+                ><span class="label">Revolving Cable Car</span
+                ><span class="desc"
+                  >Titlis Rotair – world's first revolving gondola</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">❄️</span
+                ><span class="label">Glacier Cave</span
+                ><span class="desc"
+                  >Walk inside the glacier – ice sculptures</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌉</span><span class="label">Cliff Walk</span
+                ><span class="desc"
+                  >Suspension bridge with breathtaking views</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛄</span><span class="label">Snow Play</span
+                ><span class="desc"
+                  >Snowball fights &amp; sledging – even in July!</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> No fuel
+                needed today (short drives). If needed, fill at
+                <strong>Engelberg</strong> or <strong>Interlaken</strong> – both
+                have several stations.
+                <em
+                  >Note: Swiss fuel is more expensive – fill in Germany before
+                  entering Switzerland if possible.</em
+                >
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 4 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 9</td>
+          <td>Thu</td>
+          <td>Grindelwald First + Brienz + Iseltwald + BBQ</td>
+          <td>Local</td>
+          <td><strong>Public Transport</strong></td>
+          <td>Interlaken</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">4 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🚠</span
+                ><span class="label">Grindelwald First Gondola</span
+                ><span class="desc"
+                  >Ride up to First – stunning mountain views</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌉</span
+                ><span class="label">First Cliff Walk</span
+                ><span class="desc"
+                  >Suspension walkway with views of Eiger</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🛴</span
+                ><span class="label">Mountain Carts / Trottibikes</span
+                ><span class="desc"
+                  >Adrenaline ride down the mountain (kids love it!)</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🏞️</span
+                ><span class="label">Iseltwald BBQ</span
+                ><span class="desc"
+                  >Quiet peninsula on Lake Brienz – perfect picnic spot</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> No
+                driving today. If needed, fill at
+                <strong>Interlaken</strong> (several stations available).
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 5 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 10</td>
+          <td>Fri</td>
+          <td>Lauterbrunnen + Mürren + Lake Thun + Harder Kulm</td>
+          <td>Local</td>
+          <td><strong>Public Transport</strong></td>
+          <td>Interlaken (extend)</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">5 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">💧</span
+                ><span class="label">Staubbach Falls</span
+                ><span class="desc"
+                  >300m free‑falling waterfall – easy walk</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🏔️</span
+                ><span class="label">Lauterbrunnen Valley</span
+                ><span class="desc"
+                  >72 waterfalls in the valley – amazing scenery</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🚠</span
+                ><span class="label">Mürren Cable Car</span
+                ><span class="desc"
+                  >Car‑free village with Eiger, Mönch &amp; Jungfrau views</span
+                >
+              </div>
+              <div class="detail-activity">
+                 <span class="icon">⛵</span
+                ><span class="label">Lake Thun Cruise</span
+                ><span class="desc">Scenic boat ride on the lake</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🚟</span
+                ><span class="label">Harder Kulm Funicular</span
+                ><span class="desc"
+                  >Panoramic viewpoint over Interlaken &amp; lakes</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> No
+                driving today. Top up if needed at
+                <strong>Interlaken</strong> before tomorrow's long drive.
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 6 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 11</td>
+          <td>Sat</td>
+          <td>Interlaken → Lugano (Gotthard Tunnel or Pass)</td>
+          <td>225</td>
+          <td><strong>3h 30m</strong></td>
+          <td>Lugano/Tamaro</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">3 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🌉</span
+                ><span class="label">Devil's Bridge (Teufelsbrücke)</span
+                ><span class="desc"
+                  >Iconic stone bridge with dramatic history – photo stop</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🏰</span
+                ><span class="label">Bellinzona Castles</span
+                ><span class="desc"
+                  >Three medieval castles – UNESCO sites, towers to
+                  explore</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛰️</span
+                ><span class="label">Gotthard Pass Drive</span
+                ><span class="desc"
+                  >Scenic mountain pass with fortress views</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong>
+                <strong>Before crossing the Gotthard</strong> – recommended:
+                <strong>Gotthard Motorway Service Area</strong> (A2, Schattdorf)
+                – 24h fuel, petrol, diesel, LPG[reference:4][reference:5]. Also
+                possible at <strong>BP Pratteln-Nord</strong> (A2/A3
+                junction)[reference:6].
+                <em
+                  >Fill up before entering the tunnel – fuel is cheaper on the
+                  north side.</em
+                >
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 7 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 12</td>
+          <td>Sun</td>
+          <td>Lugano → Monte Tamaro → Venice/Mestre</td>
+          <td>325</td>
+          <td><strong>4h 30m</strong></td>
+          <td>Between Milan/Venice</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">4 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🛷</span
+                ><span class="label">Alpine Coaster Bob Ride</span
+                ><span class="desc"
+                  >800m toboggan run – thrill ride for kids &amp; adults</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🧗</span
+                ><span class="label">Rope Park (Adventure Park)</span
+                ><span class="desc">Treetop climbing courses for all ages</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">💦</span
+                ><span class="label">Splash &amp; Spa Tamaro</span
+                ><span class="desc"
+                  >Water park with pools &amp; slides – cool down</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🚠</span
+                ><span class="label">Monte Tamaro Gondola</span
+                ><span class="desc">Scenic ride up the mountain</span>
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong>
+                <strong
+                  >Fill up in Switzerland before crossing into Italy</strong
+                >
+                (fuel is cheaper in CH than IT). Recommended:
+                <strong>Gotthard Motorway Service Area</strong>
+                (A2)[reference:7] or any station near
+                <strong>Chiasso</strong> border. In Italy, motorway fuel is
+                expensive – consider filling at
+                <strong>commercial areas near Mestre</strong> before reaching
+                Venice[reference:8].
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 8 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 13</td>
+          <td>Mon</td>
+          <td>Venice full day</td>
+          <td>Local</td>
+          <td><strong>Ferry/Bus</strong></td>
+          <td>Venice/Mestre</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">5 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🛶</span
+                ><span class="label">Gondola Ride</span
+                ><span class="desc"
+                  >Classic Venice experience – kids love it!</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛪</span
+                ><span class="label">St. Mark's Square</span
+                ><span class="desc">Piazza San Marco – feed the pigeons</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌉</span
+                ><span class="label">Bridge of Sighs</span
+                ><span class="desc"
+                  >Famous historic bridge – great photo spot</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🍦</span
+                ><span class="label">Gelato Walk</span
+                ><span class="desc"
+                  >Explore narrow streets, find the best gelato</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛵</span
+                ><span class="label">Vaporetto (Water Bus)</span
+                ><span class="desc"
+                  >Ride the water bus along the Grand Canal</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> No
+                driving today. If needed, fill at
+                <strong>Q8 Station Venice</strong> (Mestre area)[reference:9] or
+                other stations in <strong>Mestre commercial areas</strong> –
+                cheaper than motorway stations[reference:10].
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 9 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 14</td>
+          <td>Tue</td>
+          <td>Venice → Villach → Lake Ossiach</td>
+          <td>254</td>
+          <td><strong>3h 30m</strong></td>
+          <td>Lake Ossiach</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">3 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🏊</span
+                ><span class="label">Lake Ossiach Swimming</span
+                ><span class="desc"
+                  >Warm, crystal‑clear lake – perfect swim stop</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🛶</span
+                ><span class="label">Paddleboarding</span
+                ><span class="desc"
+                  >Rent a paddleboard and explore the lake</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🎠</span
+                ><span class="label">Lakeside Playground</span
+                ><span class="desc">Kids can play while adults relax</span>
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong>
+                <strong>Fill up in Italy before crossing into Austria</strong>
+                (Italian fuel is cheaper than Austrian). Recommended: motorway
+                stations on <strong>A4 near Udine / Tarvisio</strong> before the
+                border[reference:11]. In Austria, fill at
+                <strong>Villach</strong> if needed – there are several stations
+                near the motorway exit.
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 10 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 15</td>
+          <td>Wed</td>
+          <td>Lake Ossiach → Lake Wolfgang → Salzburg</td>
+          <td>192</td>
+          <td><strong>3h 00m</strong></td>
+          <td>Salzburg</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">4 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🏊</span
+                ><span class="label">Lake Worthersee Swim Stop</span
+                ><span class="desc"
+                  >Austria's warmest lake – great for a refreshing dip</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">⛵</span
+                ><span class="label">Lake Wolfgang Boat Cruise</span
+                ><span class="desc">Scenic cruise on the lake</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🏘️</span
+                ><span class="label">St. Wolfgang Village</span
+                ><span class="desc"
+                  >Walk through the charming lakeside village</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🌳</span
+                ><span class="label">Mirabell Gardens</span
+                ><span class="desc"
+                  >Beautiful gardens in Salzburg – free, great for kids to
+                  run</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> Fill up
+                at <strong>Salzburg</strong> – recommended:
+                <strong>Shell Eben (Nord)</strong>
+                (A10/Tauernautobahn)[reference:12] or
+                <strong>Golling West / Ost</strong> service stations on
+                A10[reference:13].
+                <em
+                  >Fuel is cheaper in Austria than in Italy – fill up before
+                  heading to Germany.</em
+                >
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 11 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 16</td>
+          <td>Thu</td>
+          <td>Salzburg → Stuttgart/Munich + shopping</td>
+          <td>357</td>
+          <td><strong>5h 00m</strong></td>
+          <td>Near depot</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">3 activities + ⛽</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🏰</span
+                ><span class="label">Salzburg Fortress</span
+                ><span class="desc"
+                  >Funicular up, castle tour with amazing views</span
+                >
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🛒</span
+                ><span class="label">Shopping Stop</span
+                ><span class="desc">Final grocery / souvenir stock‑up</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">🚐</span
+                ><span class="label">Final RV Prep</span
+                ><span class="desc"
+                  >Clean, empty tanks, fuel up before drop‑off</span
+                >
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong>
+                <strong>Fill up in Austria before crossing into Germany</strong>
+                (Austrian fuel is slightly cheaper). Recommended:
+                <strong>Golling West / Ost</strong> on A10[reference:14] or
+                <strong>Shell near Salzburg-Süd</strong>[reference:15]. In
+                Germany, recommended: <strong>Raststätte Aichen</strong> (A8,
+                between Munich and Stuttgart) – rated one of the best German
+                motorway stations[reference:16], or
+                <strong>Raststätte Gruibingen Süd</strong> (A8)[reference:17].
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Day 12 -->
+        <tr class="main-row" onclick="toggleRow(this)">
+          <td>Jul 17</td>
+          <td>Fri</td>
+          <td>RV return 11:00 AM → Family 3 to Copenhagen</td>
+          <td>Car</td>
+          <td>–</td>
+          <td>–</td>
+          <td>
+            <span class="expand-icon">▶</span>
+            <span style="color: #3498db">2 activities</span>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="7">
+            <div class="detail-content">
+              <div class="detail-activity">
+                <span class="icon">🔑</span
+                ><span class="label">RV Drop‑off</span
+                ><span class="desc">Return campervan by 11:00 AM</span>
+              </div>
+              <div class="detail-activity">
+                <span class="icon">✈️</span
+                ><span class="label">Family 3 Travel</span
+                ><span class="desc">Travel back to Copenhagen</span>
+              </div>
+              <div class="fuel-stop">
+                <span class="icon">⛽</span> <strong>Fuel Stop:</strong> Return
+                the campervan with a <strong>full tank</strong> (rental
+                requirement). Fill up near the depot – use apps like
+                <strong>Clever‑Tanken</strong> or <strong>ADAC Drive</strong> to
+                find the cheapest nearby station[reference:18].
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div
+      style="
+        margin-top: 20px;
+        padding: 12px 18px;
+        background: #eaf4fb;
+        border-radius: 6px;
+      "
+    >
+      <p style="margin: 0; font-size: 10pt; color: #2c3e50">
+        <strong>💡 Tip:</strong> Click any row to expand/collapse the daily
+        activities and fuel stop suggestions. In print mode, all rows will
+        automatically expand.
+      </p>
+    </div>
+
+    <script>
+      function toggleRow(row) {
+        var detailRow = row.nextElementSibling;
+        if (detailRow && detailRow.classList.contains("detail-row")) {
+          detailRow.classList.toggle("open");
+        }
+        var icon = row.querySelector(".expand-icon");
+        if (icon) {
+          if (detailRow.classList.contains("open")) {
+            icon.textContent = "▼";
+          } else {
+            icon.textContent = "▶";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
